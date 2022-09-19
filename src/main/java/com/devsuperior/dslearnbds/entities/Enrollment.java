@@ -2,12 +2,12 @@ package com.devsuperior.dslearnbds.entities;
 
 import com.devsuperior.dslearnbds.pk.EnrollmentPK;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "tb_enrollment")
 public class Enrollment implements Serializable {
@@ -19,9 +19,12 @@ public class Enrollment implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant enrollMoment;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant refund;
+    private Instant refundMoment;
     private boolean available;
     private boolean onlyUpdate;
+
+    @ManyToMany(mappedBy = "enrollmentDone")
+    private Set<Lesson> lessonsDone = new HashSet<>();
 
     public Enrollment() {
     }
@@ -30,7 +33,7 @@ public class Enrollment implements Serializable {
         this.id.setUser(user);
         this.id.setOffer(offer);
         this.enrollMoment = enrollMoment;
-        this.refund = refund;
+        this.refundMoment = refund;
         this.available = available;
         this.onlyUpdate = onlyUpdate;
     }
@@ -59,12 +62,12 @@ public class Enrollment implements Serializable {
         this.enrollMoment = enrollMoment;
     }
 
-    public Instant getRefund() {
-        return refund;
+    public Instant getRefundMoment() {
+        return refundMoment;
     }
 
-    public void setRefund(Instant refund) {
-        this.refund = refund;
+    public void setRefundMoment(Instant refundMoment) {
+        this.refundMoment = refundMoment;
     }
 
     public boolean isAvailable() {
